@@ -2,9 +2,11 @@ Write-Host -ForegroundColor Green "Starting OSDCloud ZTI"
 Start-Sleep -Seconds 5
 
 Write-Host -ForegroundColor Cyan "Capturing hardware hash for Autopilot..."
-$AutopilotDir = (Get-Volume | Where-Object {$_.FileSystemLabel -eq "WINPE"} | Select-Object -First 1).DriveLetter + ":\Autopilot"
+$AutopilotDir = (Get-PSDrive -PSProvider FileSystem | Where-Object {Test-Path "$($_.Root)Autopilot\oa3tool.exe"} | Select-Object -First 1).Root + "Autopilot"
+Write-Host -ForegroundColor Cyan "Autopilot tools found at: $AutopilotDir"
 Copy-Item "$AutopilotDir\PCPKsp.dll" "X:\Windows\System32\PCPKsp.dll" -Force
 rundll32 X:\Windows\System32\PCPKsp.dll,DllInstall
+Set-Location $AutopilotDir
 & "$AutopilotDir\oa3tool.exe" /Report /ConfigFile="$AutopilotDir\OA3.cfg" /NoKeyCheck
 
 # Convert OA3.xml to Autopilot CSV
