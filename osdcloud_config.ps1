@@ -11,7 +11,7 @@ Set-Location $AutopilotDir
 
 # Convert OA3.xml to Autopilot CSV
 [xml]$xml = Get-Content "$AutopilotDir\OA3.xml"
-$hash = $xml.OA3.SoftwareProtectionPlatform.HardwareHash
+$hash = $xml.Key.HardwareHash
 $serial = (Get-WmiObject Win32_BIOS).SerialNumber
 "Device Serial Number,Windows Product ID,Hardware Hash" | Out-File "$AutopilotDir\..\AutopilotHash.csv" -Encoding utf8
 "$serial,,$hash" | Out-File "$AutopilotDir\..\AutopilotHash.csv" -Encoding utf8 -Append
