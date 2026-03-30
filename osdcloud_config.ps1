@@ -4,26 +4,7 @@ Start-Sleep -Seconds 5
 Write-Host -ForegroundColor Cyan "Capturing hardware hash for Autopilot..."
 $AutopilotDir = (Get-PSDrive -PSProvider FileSystem | Where-Object {Test-Path "$($_.Root)Autopilot\oa3tool.exe"} | Select-Object -First 1).Root + "Autopilot"
 Write-Host -ForegroundColor Cyan "Autopilot tools found at: $AutopilotDir"
-
-# Write correct OA3.cfg
-$oa3config = @"
-<OA3>
-    <FileBased>
-        <OutputFile>.\OA3.xml</OutputFile>
-        <InputKeyXMLFile>.\OA3.xml</InputKeyXMLFile>
-    </FileBased>
-    <OutputData>
-        <AssembledBinaryFile>.\OA3.bin</AssembledBinaryFile>
-        <ReportedXMLFile>.\OA3.xml</ReportedXMLFile>
-    </OutputData>
-    <DeviceComputing>
-        <Enable>TRUE</Enable>
-    </DeviceComputing>
-</OA3>
-"@
-$oa3config | Out-File -FilePath "$AutopilotDir\OA3.cfg" -Encoding utf8
-
-# Capture hardware hash
+rundll32 X:\Windows\System32\PCPKsp.dll,DllInstall
 & "$AutopilotDir\oa3tool.exe" /Report /ConfigFile="$AutopilotDir\OA3.cfg" /NoKeyCheck
 
 # Convert OA3.xml to Autopilot CSV
