@@ -10,7 +10,7 @@ rundll32 X:\Windows\System32\PCPKsp.dll,DllInstall
 $hash = $xml.Key.HardwareHash
 $serial = (Get-WmiObject Win32_BIOS).SerialNumber
 "Device Serial Number,Windows Product ID,Hardware Hash" | Out-File "$AutopilotDir\..\AutopilotHash.csv" -Encoding ascii
-"$serial,,$hash" | Out-File "$AutopilotDir\..\AutopilotHash.csv" -Encoding ascii -Append
+"`"$serial`",,`"$hash`"" | Out-File "$AutopilotDir\..\AutopilotHash.csv" -Encoding ascii -Append
 Write-Host -ForegroundColor Green "Hash saved to USB - AutopilotHash.csv"
 Start-Sleep -Seconds 5
 Start-OSDCloud -OSVersion 'Windows 11' -OSBuild 25H2 -OSEdition Pro -OSLanguage en-gb -OSLicense Retail -ZTI
