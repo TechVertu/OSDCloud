@@ -19,6 +19,7 @@ $serial = (Get-WmiObject Win32_BIOS).SerialNumber
 Write-Host -ForegroundColor Green "Hash saved to USB - AutopilotHash.csv"
 Start-Sleep -Seconds 5
 
+$Global:OSDCloud.ClearDiskConfirm = $true
 Start-OSDCloud -OSVersion 'Windows 11' -OSBuild 25H2 -OSEdition Pro -OSLanguage en-gb -OSLicense Retail -ZTI
 
 Write-Host -ForegroundColor Green "Installation complete - remove USB and upload AutopilotHash.csv to Autopilot"
