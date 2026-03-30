@@ -10,6 +10,7 @@ Start-Sleep -Seconds 5
 
 Start-OSDCloud -OSVersion 'Windows 11' -OSBuild 25H2 -OSEdition Pro -OSLanguage en-gb -OSLicense Retail -ZTI
 
-Write-Host -ForegroundColor Green "Restarting in 20 seconds!"
+Write-Host -ForegroundColor Green "Installation complete - remove USB and upload D:\AutopilotHash.csv to Autopilot"
+Write-Host -ForegroundColor Yellow "Device will shut down in 20 seconds..."
 Start-Sleep -Seconds 20
-wpeutil reboot
+wpeutil shutdown
