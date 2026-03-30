@@ -6,7 +6,6 @@ $AutopilotDir = (Get-PSDrive -PSProvider FileSystem | Where-Object {Test-Path "$
 Write-Host -ForegroundColor Cyan "Autopilot tools found at: $AutopilotDir"
 Copy-Item "$AutopilotDir\PCPKsp.dll" "X:\Windows\System32\PCPKsp.dll" -Force
 rundll32 X:\Windows\System32\PCPKsp.dll,DllInstall
-Set-Location $AutopilotDir
 & "$AutopilotDir\oa3tool.exe" /Report /ConfigFile="$AutopilotDir\OA3.cfg" /NoKeyCheck
 
 # Convert OA3.xml to Autopilot CSV
@@ -19,7 +18,6 @@ $serial = (Get-WmiObject Win32_BIOS).SerialNumber
 Write-Host -ForegroundColor Green "Hash saved to USB - AutopilotHash.csv"
 Start-Sleep -Seconds 5
 
-$Global:OSDCloud.ClearDiskConfirm = $true
 Start-OSDCloud -OSVersion 'Windows 11' -OSBuild 25H2 -OSEdition Pro -OSLanguage en-gb -OSLicense Retail -ZTI
 
 Write-Host -ForegroundColor Green "Installation complete - remove USB and upload AutopilotHash.csv to Autopilot"
