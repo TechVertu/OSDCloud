@@ -2,9 +2,18 @@ Write-Host -ForegroundColor Green "Starting OSDCloud ZTI"
 Start-Sleep -Seconds 5
 
 Write-Host -ForegroundColor Cyan "Capturing hardware hash for Autopilot..."
-$hash = Get-WmiObject -Namespace root/cimv2/mdm/dmmap -Class MDM_DevDetail_Ext01 -Filter "InstanceID='Ext' AND ParentID='./DevDetail'"
-$csv = "Device Serial Number,Windows Product ID,Hardware Hash`n$((Get-WmiObject Win32_BIOS).SerialNumber),,$($hash.DeviceHardwareData)"
-$csv | Out-File -FilePath "D:\AutopilotHash.csv" -Encoding utf8
+$AutopilotDir = "D:\Autopilot"
+Copy-Item "$AutopilotDir\PCPKsp.dll" "X:\Windows\System32\PCPKsp.dll" -Force
+rundll32 X:\Windows\System32\PCPKsp.dll,DllInstall
+& "$AutopilotDir\oa3tool.exe" /Report /ConfigFile="$AutopilotDir\OA3.cfg" /NoKeyCheck
+
+# Convert OA3.xml to Autopilot CSV
+[xml]$xml = Get-Content "$AutopilotDir\OA3.xml"
+$hash = $xml.OA3.SoftwareProtectionPlatform.HardwareHash
+$serial = (Get-WmiObject Win32_BIOS).SerialNumber
+"Device Serial Number,Windows Product ID,Hardware Hash" | Out-File "D:\AutopilotHash.csv" -Encoding utf8
+"$serial,,$hash" | Out-File "D:\AutopilotHash.csv" -Encoding utf8 -Append
+
 Write-Host -ForegroundColor Green "Hash saved to USB - D:\AutopilotHash.csv"
 Start-Sleep -Seconds 5
 
