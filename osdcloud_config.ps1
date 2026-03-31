@@ -13,7 +13,7 @@ $serial = (Get-WmiObject Win32_BIOS).SerialNumber
 
 Write-Host -ForegroundColor Yellow "Hash value: $hash"
 
-"Device Serial Number,Windows Product ID,Hardware Hash`r`n$serial,,$hash" | Out-File "$AutopilotDir\..\AutopilotHash.csv" -Encoding ascii -NoNewline
+"Device Serial Number,Windows Product ID,Hardware Hash`r`n$serial,,$hash" | Out-File "$AutopilotDir\..\AutopilotHash.csv" -Encoding unicode
 
 Write-Host -ForegroundColor Green "Hash saved to USB - AutopilotHash.csv"
 Start-Sleep -Seconds 5
